@@ -8,22 +8,32 @@ function List(props) {
     setEnteredInput(event.target.value);
   }
 
-  function submitHandler() {
-    if (enteredInput > 0) {
+  function submitHandler(e) {
+    e.preventDefault();
+    if (enteredInput.trim() !== "") {
       props.onSave(enteredInput);
+      setEnteredInput("");
     }
   }
 
   return (
-    <form>
-      <input onChange={inputHandler}></input>
-      <button onClick={submitHandler}>Save</button>
-    </form>
+    <div>
+      <form>
+        <input onChange={inputHandler}></input>
+        <button onClick={submitHandler}>Save</button>
+      </form>
+      <ul>
+        {props.list.map((item, index) => (
+          <li key={index}>{item}</li>
+        ))}
+      </ul>
+    </div>
   );
 }
 
 List.propTypes = {
   onSave: PropTypes.func.isRequired,
+  list: PropTypes.array.isRequired,
 };
 
 export default List;
