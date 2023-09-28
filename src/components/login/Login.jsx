@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
+import "./Login.css";
 
 function Login(props) {
   const [username, setUsername] = useState("");
@@ -34,12 +35,22 @@ function Login(props) {
   return (
     <>
       <form onSubmit={submitHandler}>
-        <label>Username</label>
-        <input onChange={usernameHandler}></input>
-        <label>Password</label>
-        <input onChange={passwordHandler}></input>
-        <button onClick={register}>Register</button>
-        <button type="submit">Login</button>
+        <div className="group">
+          <label>Username</label>
+          <input className="input" onChange={usernameHandler}></input>
+        </div>
+        <div className="group">
+          <label>Password</label>
+          <input className="input" onChange={passwordHandler}></input>
+        </div>
+        <div className="group">
+          <button className="button" onClick={register}>
+            Register
+          </button>
+          <button className="button" type="submit">
+            Login
+          </button>
+        </div>
       </form>
     </>
   );

@@ -1,0 +1,14 @@
+.group {
+  margin-top: 5px;
+}
+
+.button {
+  margin: 5px;
+  margin-top: 20px;
+}
+
+.input {
+  margin-left: 5px;
+  background-color: white;
+  color: black;
+}

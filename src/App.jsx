@@ -1,4 +1,4 @@
-import { useState } from "react";
+import React, { useState } from "react";
 import "./App.css";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
@@ -29,20 +29,25 @@ function App() {
   }
 
   return (
-    <div>
-      {!isLoggedIn && !isRegistering && (
-        <Login
-          onLogin={loginHandler}
-          onRegister={registerHandler}
-          users={users}
-          onCheck={checkUserHandler}
-        ></Login>
-      )}
-      {!isLoggedIn && isRegistering && (
-        <Register onAddUsers={addUserHandler}></Register>
-      )}
-      {isLoggedIn && !isRegistering && <Welcome></Welcome>}
-    </div>
+    <React.Fragment>
+      <header>
+        <h1>TO DO LIST</h1>
+      </header>
+      <div className="container">
+        {!isLoggedIn && !isRegistering && (
+          <Login
+            onLogin={loginHandler}
+            onRegister={registerHandler}
+            users={users}
+            onCheck={checkUserHandler}
+          ></Login>
+        )}
+        {!isLoggedIn && isRegistering && (
+          <Register onAddUsers={addUserHandler}></Register>
+        )}
+        {isLoggedIn && !isRegistering && <Welcome></Welcome>}
+      </div>
+    </React.Fragment>
   );
 }
 
