@@ -41,7 +41,11 @@ function Login(props) {
         </div>
         <div className="group">
           <label>Password</label>
-          <input className="input" onChange={passwordHandler}></input>
+          <input
+            className="input"
+            type="password"
+            onChange={passwordHandler}
+          ></input>
         </div>
         <div className="group">
           <button className="button" onClick={register}>

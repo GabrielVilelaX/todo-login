@@ -41,11 +41,19 @@ function Register(props) {
         </div>
         <div className="group">
           <label>Password</label>
-          <input className="input" onChange={passwordHandler}></input>
+          <input
+            className="input"
+            type="password"
+            onChange={passwordHandler}
+          ></input>
         </div>
         <div className="group">
           <label>Confirm Password</label>
-          <input className="input" onChange={passwordHandler2}></input>
+          <input
+            className="input"
+            type="password"
+            onChange={passwordHandler2}
+          ></input>
         </div>
         <div className="group">
           <button type="submit" className="button">

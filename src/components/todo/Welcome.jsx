@@ -5,7 +5,9 @@ function Welcome() {
   const [list, setList] = useState([]);
 
   function listHandler(newlist) {
-    setList((prevList) => [...prevList, newlist]);
+    setList((prevList) => {
+      return [...prevList, newlist];
+    });
   }
 
   return (
