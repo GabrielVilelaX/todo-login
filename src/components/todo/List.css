@@ -1,8 +1,37 @@
-.clicked {
-  background-color: green;
-}
-
 img {
   height: 25px;
   width: auto;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+.delete {
+  padding: 5px;
+}
+
+.button {
+  margin-left: 5px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  height: 20px;
+}
+
+.list-item.clicked {
+  background-color: green;
+}
+
+input {
+  background-color: #333;
+  border: solid black 1px;
+  border-radius: 5px;
+  color: white;
+  height: 23px;
 }

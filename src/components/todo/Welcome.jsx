@@ -10,10 +10,25 @@ function Welcome() {
     });
   }
 
+  function toggleItemClick(itemId) {
+    setList((prevList) =>
+      prevList.map((item) => {
+        if (item.id === itemId) {
+          return { ...item, completed: !item.completed };
+        }
+        return item;
+      })
+    );
+  }
+
   return (
-    <div>
-      <List list={list} onSave={listHandler}></List>
-    </div>
+    <>
+      <List
+        list={list}
+        onSave={listHandler}
+        toggleItemClick={toggleItemClick}
+      ></List>
+    </>
   );
 }
 

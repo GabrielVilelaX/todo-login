@@ -22,6 +22,7 @@ function Register(props) {
 
   function usernameHandler(event) {
     setUsername(event.target.value);
+    console.log(event.target.value);
   }
 
   function passwordHandler(event) {

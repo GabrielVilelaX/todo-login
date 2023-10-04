@@ -1,5 +1,4 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
   padding: 2rem;
   padding-top: 0;
@@ -41,7 +40,7 @@
   padding-top: 30px;
   padding-bottom: 20px;
   border-radius: 4px;
-  width: 30%;
+  width: 25%;
   margin: 0 auto;
   margin-top: 10%;
   background-color: #333;
@@ -51,5 +50,7 @@ header {
   background-color: #333;
   color: #fff;
   padding: 20px;
-  text-align: center;
+  justify-content: center;
+  display: flex;
+  width: 100%;
 }

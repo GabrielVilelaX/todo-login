@@ -1,14 +1,27 @@
 .group {
   margin-top: 5px;
+  display: flex;
+  flex-direction: column;
 }
 
-.button {
-  margin: 5px;
-  margin-top: 20px;
+.group label {
+  margin-bottom: 5px;
 }
 
-.input {
+.group input {
   margin-left: 5px;
   background-color: white;
   color: black;
+}
+
+label {
+  text-align: left;
+  font-size: 14px;
+}
+
+.group input {
+  background-color: #333;
+  border: solid black 1px;
+  border-radius: 5px;
+  color: white;
 }
