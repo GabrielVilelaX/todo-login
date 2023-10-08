@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import Login from "./components/login/Login";
 import Register from "./components/register/Register";
 import Welcome from "./components/todo/Welcome";
+import Header from "./components/header/Header";
 
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -29,10 +30,8 @@ function App() {
   }
 
   return (
-    <React.Fragment>
-      <header>
-        <h1>TO DO LIST</h1>
-      </header>
+    <>
+      <Header />
       <div className="container">
         {!isLoggedIn && !isRegistering && (
           <Login
@@ -40,14 +39,16 @@ function App() {
             onRegister={registerHandler}
             users={users}
             onCheck={checkUserHandler}
-          ></Login>
+          />
         )}
+
         {!isLoggedIn && isRegistering && (
-          <Register onAddUsers={addUserHandler}></Register>
+          <Register onAddUsers={addUserHandler} />
         )}
-        {isLoggedIn && !isRegistering && <Welcome></Welcome>}
+
+        {isLoggedIn && !isRegistering && <Welcome />}
       </div>
-    </React.Fragment>
+    </>
   );
 }
 

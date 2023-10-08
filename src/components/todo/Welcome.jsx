@@ -21,12 +21,19 @@ function Welcome() {
     );
   }
 
+  function deleteHandler(inputID) {
+    const newList = list.filter((input) => input.id !== inputID);
+
+    setList(newList);
+  }
+
   return (
     <>
       <List
         list={list}
         onSave={listHandler}
         toggleItemClick={toggleItemClick}
+        onDelete={deleteHandler}
       ></List>
     </>
   );

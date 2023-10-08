@@ -20,42 +20,41 @@ function Register(props) {
     }
   }
 
-  function usernameHandler(event) {
-    setUsername(event.target.value);
-    console.log(event.target.value);
-  }
-
-  function passwordHandler(event) {
-    setPassword(event.target.value);
-  }
-
-  function passwordHandler2(event) {
-    setPassword2(event.target.value);
-  }
-
   return (
     <>
       <form onSubmit={submitHandler}>
         <div className="group">
           <label>Username</label>
-          <input className="input" onChange={usernameHandler}></input>
+          <input
+            className="input"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          ></input>
         </div>
+
         <div className="group">
           <label>Password</label>
           <input
             className="input"
             type="password"
-            onChange={passwordHandler}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           ></input>
         </div>
+
         <div className="group">
           <label>Confirm Password</label>
           <input
             className="input"
             type="password"
-            onChange={passwordHandler2}
+            onChange={(e) => {
+              setPassword2(e.target.value);
+            }}
           ></input>
         </div>
+
         <div className="group">
           <button type="submit" className="button">
             Register

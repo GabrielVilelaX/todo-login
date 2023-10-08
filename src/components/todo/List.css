@@ -10,10 +10,13 @@ ul {
 
 .delete {
   padding: 5px;
+  background-color: #333;
+  border: 1px solid black;
 }
 
 .button {
   margin-left: 5px;
+  margin-top: 5px;
 }
 
 .list-item {
@@ -22,10 +25,12 @@ ul {
   justify-content: space-between;
   padding: 20px;
   height: 20px;
+  margin-bottom: 5px;
 }
 
 .list-item.clicked {
   background-color: green;
+  border-radius: 5px;
 }
 
 input {
@@ -34,4 +39,8 @@ input {
   border-radius: 5px;
   color: white;
   height: 23px;
+}
+
+ul {
+  list-style: circle;
 }

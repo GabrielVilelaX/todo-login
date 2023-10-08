@@ -11,14 +11,6 @@ function Login(props) {
     props.onRegister();
   }
 
-  function usernameHandler(event) {
-    setUsername(event.target.value);
-  }
-
-  function passwordHandler(event) {
-    setPassword(event.target.value);
-  }
-
   function submitHandler(e) {
     e.preventDefault();
     const userExists = props.onCheck(username, password);
@@ -37,16 +29,25 @@ function Login(props) {
       <form onSubmit={submitHandler}>
         <div className="group">
           <label>Username</label>
-          <input className="input" onChange={usernameHandler}></input>
+          <input
+            className="input"
+            onChange={(e) => {
+              setUsername(e.target.value);
+            }}
+          ></input>
         </div>
+
         <div className="group">
           <label>Password</label>
           <input
             className="input"
             type="password"
-            onChange={passwordHandler}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
           ></input>
         </div>
+
         <div className="group">
           <button className="button" onClick={register}>
             Register
