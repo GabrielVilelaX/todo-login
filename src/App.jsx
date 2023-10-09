@@ -15,7 +15,7 @@ function App() {
   }
 
   function loginHandler() {
-    setIsLoggedIn(true);
+    setIsLoggedIn(!isLoggedIn);
   }
 
   function addUserHandler(newUser) {
@@ -31,7 +31,7 @@ function App() {
 
   return (
     <>
-      <Header />
+      <Header isLoggedIn={isLoggedIn} onLogOut={loginHandler} />
       <div className="container">
         {!isLoggedIn && !isRegistering && (
           <Login
