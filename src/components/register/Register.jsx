@@ -2,7 +2,7 @@ import { useState } from "react";
 import PropTypes from "prop-types";
 import "../login/Login.css";
 
-function Register(props) {
+function Register({ onAddUsers, existingUsers }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [password2, setPassword2] = useState("");
@@ -14,7 +14,15 @@ function Register(props) {
         username: username,
         password: password,
       };
-      props.onAddUsers(user);
+
+      existingUsers.push(user);
+
+      localStorage.setItem("users", JSON.stringify(existingUsers));
+
+      setUsername("");
+      setPassword("");
+      setPassword2("");
+      onAddUsers(user);
     } else {
       return;
     }
@@ -67,6 +75,7 @@ function Register(props) {
 
 Register.propTypes = {
   onAddUsers: PropTypes.func.isRequired,
+  existingUsers: PropTypes.element.isRequired,
 };
 
 export default Register;

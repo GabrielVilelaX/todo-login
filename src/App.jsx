@@ -5,6 +5,8 @@ import Register from "./components/register/Register";
 import Welcome from "./components/todo/Welcome";
 import Header from "./components/header/Header";
 
+const existingUsers = JSON.parse(localStorage.getItem("users")) || [];
+
 function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isRegistering, setIsRegistering] = useState(false);
@@ -43,7 +45,7 @@ function App() {
         )}
 
         {!isLoggedIn && isRegistering && (
-          <Register onAddUsers={addUserHandler} />
+          <Register onAddUsers={addUserHandler} existingUsers={existingUsers} />
         )}
 
         {isLoggedIn && !isRegistering && <Welcome />}
