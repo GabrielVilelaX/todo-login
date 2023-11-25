@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+
 import "./List.css";
 //import foto from "https://cdn.discordapp.com/attachments/715585040972644442/1157414273077747804/image.png?ex=6518858a&is=6517340a&hm=9a53e9ef67e843786ac6239c0961cac1ab6e5ac25eb8c672a41a688a9027a43a&";
 
@@ -76,12 +76,5 @@ function List(props) {
     </>
   );
 }
-
-List.propTypes = {
-  onSave: PropTypes.func.isRequired,
-  list: PropTypes.array.isRequired,
-  toggleItemClick: PropTypes.func.isRequired,
-  onDelete: PropTypes.func.isRequired,
-};
 
 export default List;

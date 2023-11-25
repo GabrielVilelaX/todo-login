@@ -1,5 +1,3 @@
-import PropTypes from "prop-types";
-
 function Header(props) {
   function loginHandler() {
     props.onLogOut();
@@ -11,10 +9,5 @@ function Header(props) {
     </header>
   );
 }
-
-Header.propTypes = {
-  isLoggedIn: PropTypes.bool.isRequired,
-  onLogOut: PropTypes.func.isRequired,
-};
 
 export default Header;

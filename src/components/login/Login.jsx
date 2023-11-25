@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import { useState } from "react";
 import "./Login.css";
 
@@ -60,11 +59,5 @@ function Login(props) {
     </>
   );
 }
-
-Login.propTypes = {
-  onRegister: PropTypes.func.isRequired,
-  onCheck: PropTypes.func.isRequired,
-  onLogin: PropTypes.func.isRequired,
-};
 
 export default Login;

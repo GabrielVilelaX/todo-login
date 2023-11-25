@@ -1,5 +1,5 @@
 import { useState } from "react";
-import PropTypes from "prop-types";
+
 import "../login/Login.css";
 
 function Register({ onAddUsers, existingUsers }) {
@@ -72,10 +72,5 @@ function Register({ onAddUsers, existingUsers }) {
     </>
   );
 }
-
-Register.propTypes = {
-  onAddUsers: PropTypes.func.isRequired,
-  existingUsers: PropTypes.element.isRequired,
-};
 
 export default Register;
