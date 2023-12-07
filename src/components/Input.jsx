@@ -1,19 +1,14 @@
-import { useState } from "react";
+function Input({ children, setInput }) {
+  //const [enteredInput, setEnteredInput] = useState("");
 
-import "./login/Login.css";
-
-function Input(props) {
-  const [enteredInput, setEnteredInput] = useState(props.value || "");
-
-  function inputHandler(event) {
-    setEnteredInput(event.target.value);
-    props.OnInput(enteredInput);
+  function inputHandler(e) {
+    setInput(e.target.value);
   }
 
   return (
-    <div className="group">
-      <label htmlFor={props.id}>{props.children}</label>
-      <input id={props.id} value={enteredInput} onChange={inputHandler} />
+    <div>
+      <label>{children}</label>
+      <input onChange={inputHandler}></input>
     </div>
   );
 }
