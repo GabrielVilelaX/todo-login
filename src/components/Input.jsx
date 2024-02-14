@@ -1,3 +1,5 @@
+import styles from "./Input.module.css";
+
 function Input({ children, setInput }) {
   //const [enteredInput, setEnteredInput] = useState("");
 
@@ -6,9 +8,9 @@ function Input({ children, setInput }) {
   }
 
   return (
-    <div>
+    <div className={styles.container}>
       <label>{children}</label>
-      <input onChange={inputHandler}></input>
+      <input className={styles.input} onChange={inputHandler}></input>
     </div>
   );
 }

@@ -1,11 +1,9 @@
 import { useState } from "react";
-import { useUser } from "../components/context/UserContext";
 
 import "./List.css";
-import Input from "../components/Input";
+//import foto from "https://cdn.discordapp.com/attachments/715585040972644442/1157414273077747804/image.png?ex=6518858a&is=6517340a&hm=9a53e9ef67e843786ac6239c0961cac1ab6e5ac25eb8c672a41a688a9027a43a&";
 
-function List({ onSave, toggleItemClick, onDelete }) {
-  const { addActivity, currentUser } = useUser();
+function List(props) {
   const [enteredInput, setEnteredInput] = useState("");
   const [deletar, setDeletar] = useState(false);
 
@@ -18,21 +16,25 @@ function List({ onSave, toggleItemClick, onDelete }) {
         id: `${enteredInput}-${Date.now()}`,
       };
 
-      onSave(userInput);
-      addActivity(userInput);
+      props.onSave(userInput);
       setEnteredInput("");
     }
   }
 
   function DeleteButton(e) {
     e.preventDefault();
-    setDeletar((prevDeletar) => !prevDeletar);
+    deletar ? setDeletar(false) : setDeletar(true);
   }
 
   return (
     <>
       <form>
-        <Input setInput={setEnteredInput} />
+        <input
+          value={enteredInput}
+          onChange={(e) => {
+            setEnteredInput(e.target.value);
+          }}
+        ></input>
 
         <button className="button" onClick={submitHandler}>
           Save
@@ -42,12 +44,11 @@ function List({ onSave, toggleItemClick, onDelete }) {
         </button>
       </form>
       <ul>
-        {currentUser.activities &&
-          currentUser.activities.length > 0 &&
-          currentUser.activities.map((item) => (
+        {props.list.map((item) => (
+          <>
             <li
               key={item.id}
-              onClick={() => toggleItemClick(item.id)}
+              onClick={() => props.toggleItemClick(item.id)}
               className={`list-item ${item.completed ? "clicked" : ""}`}
             >
               <span
@@ -59,7 +60,7 @@ function List({ onSave, toggleItemClick, onDelete }) {
                 <button
                   className="delete"
                   onClick={() => {
-                    onDelete(item.id);
+                    props.onDelete(item.id);
                   }}
                 >
                   <img
@@ -69,7 +70,8 @@ function List({ onSave, toggleItemClick, onDelete }) {
                 </button>
               )}
             </li>
-          ))}
+          </>
+        ))}
       </ul>
     </>
   );

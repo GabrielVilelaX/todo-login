@@ -1,13 +1,18 @@
+import { useNavigate } from "react-router-dom";
+import { useUser } from "../components/context/UserContext";
 import List from "./List";
 import { useState } from "react";
 
 function Welcome() {
-  const [list, setList] = useState([]);
+  // const { currentUser } = useUser();
+  const { logout } = useUser();
+  const [list, setList] = useState([""]);
+  const navigate = useNavigate();
 
-  function listHandler(newlist) {
-    setList((prevList) => {
-      return [...prevList, newlist];
-    });
+  function listHandler(newList) {
+    console.log(newList);
+    console.log(list);
+    setList(newList);
   }
 
   function toggleItemClick(itemId) {
@@ -27,8 +32,14 @@ function Welcome() {
     setList(newList);
   }
 
+  function logoutHandler() {
+    logout();
+    navigate("/");
+  }
+
   return (
     <>
+      <button onClick={logoutHandler}>Logout</button>
       <List
         list={list}
         onSave={listHandler}
