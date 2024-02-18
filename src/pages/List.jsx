@@ -1,75 +1,96 @@
-import { useState } from "react";
-import { useUser } from "../components/context/UserContext";
-
+import { useState, useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
 import "./List.css";
 import Input from "../components/Input";
+import supabase from "../services/supabase";
+import styles from "../components/Input.module.css";
+import { toast } from "react-toastify";
 
-function List({ onSave, toggleItemClick, onDelete }) {
-  const { addActivity, currentUser } = useUser();
-  const [enteredInput, setEnteredInput] = useState("");
-  const [deletar, setDeletar] = useState(false);
+function List() {
+  const [userList, setUserList] = useState([]);
+  const [newTask, setNewTask] = useState("");
 
-  function submitHandler(e) {
+  useEffect(() => {
+    const fetchUserList = async () => {
+      try {
+        const user = await supabase.auth.getUser();
+
+        if (user) {
+          const { data: lists, error } = await supabase
+            .from("lists")
+            .select("*")
+            .eq("id", user.data.user.id);
+
+          if (error) {
+            toast.error("Error fetching user list:", error.message);
+            console.error("Error fetching user list:", error.message);
+
+            return;
+          } else {
+            console.log("User list retrieved successfully:", lists);
+            setUserList((prevList) => [...prevList, ...lists]);
+          }
+        } else {
+          console.log("pqp");
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error.message);
+      }
+    };
+
+    fetchUserList();
+  }, []);
+
+  const handleAddTask = async (e) => {
     e.preventDefault();
-    if (enteredInput.trim() !== "") {
-      const userInput = {
-        value: enteredInput,
-        completed: false,
-        id: `${enteredInput}-${Date.now()}`,
-      };
+    try {
+      const user = await supabase.auth.getUser();
+      console.log(user);
 
-      onSave(userInput);
-      addActivity(userInput);
-      setEnteredInput("");
+      if (user) {
+        const newTaskObject = {
+          id_task: uuidv4(),
+          task: newTask,
+          tasks: [],
+        };
+        console.log(newTaskObject);
+        const { data, error } = await supabase.from("lists").insert([
+          {
+            id: user.data.user.id,
+            id_task: newTaskObject.id_task,
+            task: newTaskObject.task,
+          },
+        ]);
+        console.log(data);
+
+        if (error) {
+          console.error("Error adding task:", error.message);
+        } else {
+          console.log("Task added successfully:", data);
+          setUserList((prevList) => [...prevList, newTaskObject]);
+          setNewTask("");
+        }
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error.message);
     }
-  }
-
-  function DeleteButton(e) {
-    e.preventDefault();
-    setDeletar((prevDeletar) => !prevDeletar);
-  }
+  };
 
   return (
     <>
       <form>
-        <Input setInput={setEnteredInput} />
-
-        <button className="button" onClick={submitHandler}>
-          Save
+        <Input setInput={setNewTask} type="text">
+          New Task
+        </Input>
+        <button className={styles.button} onClick={handleAddTask}>
+          Add Task
         </button>
-        <button className="button" onClick={DeleteButton}>
-          Deletar
-        </button>
+        <button className={styles.button}>Delete</button>
       </form>
       <ul>
-        {currentUser.activities &&
-          currentUser.activities.length > 0 &&
-          currentUser.activities.map((item) => (
-            <li
-              key={item.id}
-              onClick={() => toggleItemClick(item.id)}
-              className={`list-item ${item.completed ? "clicked" : ""}`}
-            >
-              <span
-                style={item.completed ? { textDecoration: "line-through" } : {}}
-              >
-                {item.value}
-              </span>
-              {deletar && !item.completed && (
-                <button
-                  className="delete"
-                  onClick={() => {
-                    onDelete(item.id);
-                  }}
-                >
-                  <img
-                    src="https://cdn.discordapp.com/attachments/715585040972644442/1157414273077747804/image.png?ex=6518858a&is=6517340a&hm=9a53e9ef67e843786ac6239c0961cac1ab6e5ac25eb8c672a41a688a9027a43a&"
-                    alt="foto"
-                  />
-                </button>
-              )}
-            </li>
-          ))}
+        {userList.map((item) => (
+          <li key={item.id}>{item.task}</li>
+        ))}
       </ul>
     </>
   );

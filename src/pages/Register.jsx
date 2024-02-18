@@ -1,26 +1,32 @@
 import { useState } from "react";
-import Input from "../components/Input";
-import { useUser } from "../components/context/UserContext";
 import { useNavigate } from "react-router-dom";
+import supabase from "../services/supabase";
+import Input from "../components/Input";
+import { toast } from "react-toastify";
 
 function Register() {
-  const { register } = useUser();
-  const [username, setUsername] = useState();
-  const [password, setPassword] = useState();
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
-  const handleRegister = () => {
-    if (username && password) {
-      const newUser = {
-        username: username,
+  const handleRegister = async () => {
+    try {
+      const { user, error } = await supabase.auth.signUp({
+        email: username, // Supondo que o nome de usuário é o endereço de e-mail
         password: password,
-      };
-      register(newUser);
-      setUsername("");
-      setPassword("");
-      navigate("/");
-    } else {
-      alert("Por favor, preencha todos os campos.");
+      });
+
+      if (error) {
+        console.error("Error registering user:", error.message);
+      } else {
+        await supabase
+          .from("lists")
+          .insert([{ user_id: user.id, title: "My List", tasks: [] }]);
+        toast.success("User registered successfully:", user);
+        navigate("/login");
+      }
+    } catch (error) {
+      toast.error("Unexpected error:", error.message);
     }
   };
 
@@ -28,7 +34,10 @@ function Register() {
     <>
       <h1>Register</h1>
       <Input setInput={setUsername}>Username</Input>
-      <Input setInput={setPassword}>Password</Input>
+      <Input setInput={setPassword} type="password">
+        Password
+      </Input>
+
       <button onClick={handleRegister}>Register</button>
     </>
   );

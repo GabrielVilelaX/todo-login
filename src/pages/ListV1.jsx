@@ -48,20 +48,19 @@ function List() {
       console.log(user);
 
       if (user) {
-        const newTaskObject = {
-          id_task: uuidv4(),
-          task: newTask,
-          tasks: [],
-        };
-        console.log(newTaskObject);
-        const { data, error } = await supabase.from("lists").insert([
+        const newTaskObject = { id: uuidv4(), title: newTask, tasks: [] };
+        const { data, error } = await supabase.from("lists").upsert(
+          [
+            {
+              id: user.data.user.id,
+              newTask: [newTaskObject, ...(userList || [])],
+            },
+          ],
           {
-            id: user.data.user.id,
-            id_task: newTaskObject.id_task,
-            task: newTaskObject.task,
-          },
-        ]);
-        console.log(data);
+            onConflict: ["id"],
+            returning: "minimal",
+          }
+        );
 
         if (error) {
           console.error("Error adding task:", error.message);
@@ -89,7 +88,7 @@ function List() {
       </form>
       <ul>
         {userList.map((item) => (
-          <li key={item.id}>{item.task}</li>
+          <li key={item.id}>{item.title}</li>
         ))}
       </ul>
     </>

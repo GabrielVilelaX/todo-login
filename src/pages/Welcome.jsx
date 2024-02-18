@@ -1,11 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { useUser } from "../components/context/UserContext";
 import List from "./List";
 import { useState } from "react";
+import { ToastContainer, toast } from "react-toastify";
+import supabase from "../services/supabase";
 
 function Welcome() {
   // const { currentUser } = useUser();
-  const { logout } = useUser();
   const [list, setList] = useState([""]);
   const navigate = useNavigate();
 
@@ -32,14 +32,26 @@ function Welcome() {
     setList(newList);
   }
 
-  function logoutHandler() {
-    logout();
-    navigate("/");
+  async function logoutHandler() {
+    try {
+      const { error } = await supabase.auth.signOut();
+
+      if (error) {
+        toast.error(`Error signing out: ${error.message}`);
+      } else {
+        toast.success("Welcome back anytime!");
+        navigate("/");
+      }
+    } catch (error) {
+      console.error("Unexpected error:", error.message);
+      toast.error(`Unexpected error: ${error.message}`);
+    }
   }
 
   return (
     <>
       <button onClick={logoutHandler}>Logout</button>
+      <ToastContainer />
       <List
         list={list}
         onSave={listHandler}
