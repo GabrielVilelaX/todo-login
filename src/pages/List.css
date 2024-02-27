@@ -6,6 +6,14 @@ img {
 ul {
   list-style: none;
   padding: 0;
+  list-style: circle;
+}
+
+li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
 }
 
 .delete {
@@ -41,6 +49,8 @@ input {
   height: 23px;
 }
 
-ul {
-  list-style: circle;
+.button {
+  width: auto;
+  height: auto;
+  font-size: 15px;
 }

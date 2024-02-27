@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 
-function Button({ children, value }) {
+function Button({ children, value, log }) {
   const navigate = useNavigate();
 
   function clickHandler(e) {
@@ -9,7 +9,14 @@ function Button({ children, value }) {
     navigate(`${value}`);
   }
 
-  return <button onClick={clickHandler}>{children}</button>;
+  return (
+    <button
+      className="rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
+      onClick={clickHandler}
+    >
+      {children}
+    </button>
+  );
 }
 
 export default Button;

@@ -1,95 +1,64 @@
-import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import "./List.css";
+import { useState } from "react";
 import Input from "../components/Input";
-import supabase from "../services/supabase";
-import styles from "../components/Input.module.css";
+import { HiTrash } from "react-icons/hi2";
+import {
+  useFetchUserList,
+  useAddTask,
+  useDeleteTask,
+} from "../components/context/useTaskQueries";
 import { toast } from "react-toastify";
+import "./List.css";
 
 function List() {
-  const [userList, setUserList] = useState([]);
+  const { data: userList = [], error: fetchError } = useFetchUserList();
+  const addTask = useAddTask();
+  const deleteTask = useDeleteTask();
   const [newTask, setNewTask] = useState("");
-
-  useEffect(() => {
-    const fetchUserList = async () => {
-      try {
-        const user = await supabase.auth.getUser();
-
-        if (user) {
-          const { data: lists, error } = await supabase
-            .from("lists")
-            .select("*")
-            .eq("id", user.data.user.id);
-
-          if (error) {
-            toast.error("Error fetching user list:", error.message);
-            console.error("Error fetching user list:", error.message);
-
-            return;
-          } else {
-            console.log("User list retrieved successfully:", lists);
-            setUserList((prevList) => [...prevList, ...lists]);
-          }
-        } else {
-          console.log("pqp");
-        }
-      } catch (error) {
-        console.error("Unexpected error:", error.message);
-      }
-    };
-
-    fetchUserList();
-  }, []);
 
   const handleAddTask = async (e) => {
     e.preventDefault();
     try {
-      const user = await supabase.auth.getUser();
-      console.log(user);
-
-      if (user) {
-        const newTaskObject = {
-          id_task: uuidv4(),
-          task: newTask,
-          tasks: [],
-        };
-        console.log(newTaskObject);
-        const { data, error } = await supabase.from("lists").insert([
-          {
-            id: user.data.user.id,
-            id_task: newTaskObject.id_task,
-            task: newTaskObject.task,
-          },
-        ]);
-        console.log(data);
-
-        if (error) {
-          console.error("Error adding task:", error.message);
-        } else {
-          console.log("Task added successfully:", data);
-          setUserList((prevList) => [...prevList, newTaskObject]);
-          setNewTask("");
-        }
-      }
+      await addTask.mutateAsync(newTask);
+      setNewTask("");
     } catch (error) {
       console.error("Unexpected error:", error.message);
     }
   };
 
+  const handleDeleteTask = async (id_taskToDelete) => {
+    try {
+      await deleteTask.mutateAsync(id_taskToDelete);
+    } catch (error) {
+      console.error("Unexpected error:", error.message);
+    }
+  };
+
+  if (fetchError) {
+    toast.error("Lista não foi encontrada");
+  }
+
   return (
     <>
-      <form>
-        <Input setInput={setNewTask} type="text">
-          New Task
-        </Input>
-        <button className={styles.button} onClick={handleAddTask}>
+      <form onSubmit={handleAddTask}>
+        <Input setInput={setNewTask} value={newTask} type="text" />
+        <button
+          className="mt-3 rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
+          type="submit"
+        >
           Add Task
         </button>
-        <button className={styles.button}>Delete</button>
       </form>
-      <ul>
+      <ul className="flex flex-col">
         {userList.map((item) => (
-          <li key={item.id}>{item.task}</li>
+          <li key={item.id_task}>
+            {item.task}
+            <button
+              onClick={() => handleDeleteTask(item.id_task)}
+              className="button"
+            >
+              <HiTrash />
+            </button>
+          </li>
         ))}
       </ul>
     </>

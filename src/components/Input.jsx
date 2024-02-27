@@ -1,6 +1,4 @@
-import styles from "./Input.module.css";
-
-function Input({ children, setInput }) {
+function Input({ children, setInput, type, value }) {
   //const [enteredInput, setEnteredInput] = useState("");
 
   function inputHandler(e) {
@@ -8,9 +6,14 @@ function Input({ children, setInput }) {
   }
 
   return (
-    <div className={styles.container}>
-      <label>{children}</label>
-      <input className={styles.input} onChange={inputHandler}></input>
+    <div className="flex flex-col">
+      <label className="font-semibold">{children}</label>
+      <input
+        className="bg-gray-100"
+        value={value}
+        onChange={inputHandler}
+        type={type === "password" ? "password" : undefined}
+      ></input>
     </div>
   );
 }

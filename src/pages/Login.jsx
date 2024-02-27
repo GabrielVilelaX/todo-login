@@ -1,12 +1,11 @@
 import { useState } from "react";
 import Input from "../components/Input";
-import styles from "./Login.module.css";
 import { useNavigate } from "react-router-dom";
-import supabase from "../services/supabase"; // Importe o cliente Supabase configurado
+import supabase from "../services/supabase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-function Login() {
+function Login({ setLogged }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -14,7 +13,7 @@ function Login() {
   const handleLogin = async () => {
     try {
       const { user, error } = await supabase.auth.signInWithPassword({
-        email: username, // Supondo que o nome de usuário é o endereço de e-mail
+        email: username,
         password: password,
       });
 
@@ -23,7 +22,8 @@ function Login() {
         toast.error(`Error signing in: ${error.message}`);
       } else {
         toast.success("Welcome:", user);
-        navigate("/welcome"); // Redirecione para a página de dashboard ou qualquer outra página desejada
+        setLogged();
+        navigate("/welcome");
       }
     } catch (error) {
       console.error("Unexpected error:", error.message);
@@ -33,16 +33,18 @@ function Login() {
 
   return (
     <>
-      <div className={styles.group}>
-        <h1>LOGIN</h1>
-        <ToastContainer />
-        <Input setInput={setUsername}>Username</Input>
-        <Input setInput={setPassword} type="password">
-          Password
-        </Input>
+      <ToastContainer />
+      <Input setInput={setUsername}>Username</Input>
+      <Input setInput={setPassword} type="password">
+        Password
+      </Input>
 
-        <button onClick={handleLogin}>Log In</button>
-      </div>
+      <button
+        className="mt-3 rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
+        onClick={handleLogin}
+      >
+        Log In
+      </button>
     </>
   );
 }

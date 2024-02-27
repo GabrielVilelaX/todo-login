@@ -7,38 +7,50 @@ import { toast } from "react-toastify";
 function Register() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const navigate = useNavigate();
 
   const handleRegister = async () => {
-    try {
-      const { user, error } = await supabase.auth.signUp({
-        email: username, // Supondo que o nome de usuário é o endereço de e-mail
-        password: password,
-      });
+    if (password === confirmPassword) {
+      try {
+        const { user, error } = await supabase.auth.signUp({
+          email: username,
+          password: password,
+        });
 
-      if (error) {
-        console.error("Error registering user:", error.message);
-      } else {
-        await supabase
-          .from("lists")
-          .insert([{ user_id: user.id, title: "My List", tasks: [] }]);
-        toast.success("User registered successfully:", user);
-        navigate("/login");
+        if (error) {
+          console.error("Error registering user:", error.message);
+        } else {
+          await supabase
+            .from("lists")
+            .insert([{ user_id: user.id, title: "My List", tasks: [] }]);
+          toast.success("User registered successfully:", user);
+          navigate("/login");
+        }
+      } catch (error) {
+        toast.error("Unexpected error:", error.message);
       }
-    } catch (error) {
-      toast.error("Unexpected error:", error.message);
+    } else {
+      toast.error("Senha não compativeis");
     }
   };
 
   return (
     <>
-      <h1>Register</h1>
       <Input setInput={setUsername}>Username</Input>
       <Input setInput={setPassword} type="password">
         Password
       </Input>
+      <Input setInput={setConfirmPassword} type="password">
+        Confirm Password
+      </Input>
 
-      <button onClick={handleRegister}>Register</button>
+      <button
+        className="mt-3 rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
+        onClick={handleRegister}
+      >
+        Register
+      </button>
     </>
   );
 }
