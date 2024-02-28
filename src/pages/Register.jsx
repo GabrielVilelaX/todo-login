@@ -46,7 +46,7 @@ function Register() {
       </Input>
 
       <button
-        className="mt-3 rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
+        className="mx-auto mt-3 max-w-40 items-center rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
         onClick={handleRegister}
       >
         Register

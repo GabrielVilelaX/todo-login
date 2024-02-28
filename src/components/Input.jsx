@@ -1,19 +1,26 @@
-function Input({ children, setInput, type, value }) {
-  //const [enteredInput, setEnteredInput] = useState("");
-
+function Input({ children, setInput, type, value, onPress }) {
   function inputHandler(e) {
     setInput(e.target.value);
   }
 
+  function handleKey(e) {
+    if (e.key === "Enter" && onEnterPress) {
+      onPress();
+    }
+  }
+
   return (
-    <div className="flex flex-col">
-      <label className="font-semibold">{children}</label>
+    <div className="flex flex-col items-center">
+      {children !== undefined && (
+        <label className="font-semibold">{children}</label>
+      )}
       <input
-        className="bg-gray-100"
+        className="mx-auto w-8/12 bg-gray-100"
         value={value}
         onChange={inputHandler}
+        onKeyDown={handleKey}
         type={type === "password" ? "password" : undefined}
-      ></input>
+      />
     </div>
   );
 }

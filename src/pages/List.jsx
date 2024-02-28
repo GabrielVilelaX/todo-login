@@ -39,22 +39,25 @@ function List() {
 
   return (
     <>
-      <form onSubmit={handleAddTask}>
-        <Input setInput={setNewTask} value={newTask} type="text" />
-        <button
-          className="mt-3 rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
-          type="submit"
-        >
-          Add Task
-        </button>
+      <form onSubmit={handleAddTask} className="inline-grid">
+        <>
+          <Input
+            setInput={setNewTask}
+            onPress={handleAddTask}
+            value={newTask}
+            type="text"
+          >
+            Insert Task
+          </Input>
+        </>
       </form>
-      <ul className="flex flex-col">
+      <ul className="mt-4 flex flex-col gap-2">
         {userList.map((item) => (
-          <li key={item.id_task}>
-            {item.task}
+          <li key={item.id_task} className="borderb-2">
+            <p className="underline decoration-solid">{item.task}</p>
             <button
               onClick={() => handleDeleteTask(item.id_task)}
-              className="button"
+              className="rounded border border-black bg-slate-300"
             >
               <HiTrash />
             </button>

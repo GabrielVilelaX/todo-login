@@ -11,7 +11,7 @@ function Button({ children, value, log }) {
 
   return (
     <button
-      className="rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
+      className="rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100 "
       onClick={clickHandler}
     >
       {children}
