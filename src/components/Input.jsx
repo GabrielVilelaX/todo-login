@@ -4,7 +4,7 @@ function Input({ children, setInput, type, value, onPress }) {
   }
 
   function handleKey(e) {
-    if (e.key === "Enter" && onEnterPress) {
+    if (e.key === "Enter") {
       onPress();
     }
   }
@@ -15,7 +15,7 @@ function Input({ children, setInput, type, value, onPress }) {
         <label className="font-semibold">{children}</label>
       )}
       <input
-        className="mx-auto w-8/12 bg-gray-100"
+        className="mx-auto w-8/12 rounded border-2 border-black bg-gray-100"
         value={value}
         onChange={inputHandler}
         onKeyDown={handleKey}

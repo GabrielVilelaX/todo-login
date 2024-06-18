@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import Button from "../components/Button";
 
 function Login({ setLogged }) {
   const [username, setUsername] = useState("");
@@ -22,6 +23,7 @@ function Login({ setLogged }) {
         toast.error(`Error signing in: ${error.message}`);
       } else {
         toast.success("Welcome:", user);
+
         setLogged();
         navigate("/welcome");
       }
@@ -39,12 +41,12 @@ function Login({ setLogged }) {
         Password
       </Input>
 
-      <button
-        className="mx-auto mt-3 max-w-40 items-center rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
-        onClick={handleLogin}
+      <Button
+        className="mx-auto mt-5 max-w-40 items-center rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
+        onClick={() => handleLogin()}
       >
         Log In
-      </button>
+      </Button>
     </>
   );
 }

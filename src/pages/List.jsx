@@ -1,68 +1,52 @@
-import { useState } from "react";
-import Input from "../components/Input";
-import { HiTrash } from "react-icons/hi2";
-import {
-  useFetchUserList,
-  useAddTask,
-  useDeleteTask,
-} from "../components/context/useTaskQueries";
-import { toast } from "react-toastify";
-import "./List.css";
+import { useFetchUserList } from "../components/context/useTaskQueries";
+
+import supabase from "../services/supabase";
+import TaskItem from "../components/TaskItem";
+import AddTaskForm from "../components/AddTaskForm";
+import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import Button from "../components/Button";
+import Modal from "../components/Modal";
+import Archive from "./Archive";
 
 function List() {
-  const { data: userList = [], error: fetchError } = useFetchUserList();
-  const addTask = useAddTask();
-  const deleteTask = useDeleteTask();
-  const [newTask, setNewTask] = useState("");
+  const [showArchive, setShowArchive] = useState(false);
+  const { data: userList = [] } = useFetchUserList();
+  const navigate = useNavigate();
 
-  const handleAddTask = async (e) => {
-    e.preventDefault();
-    try {
-      await addTask.mutateAsync(newTask);
-      setNewTask("");
-    } catch (error) {
-      console.error("Unexpected error:", error.message);
+  useEffect(() => {
+    async function VerifyUser() {
+      try {
+        const {
+          data: { user },
+        } = await supabase.auth.getUser();
+        if (!user) {
+          navigate("/*");
+        } else {
+          return;
+        }
+      } catch (error) {
+        console.log("error");
+        navigate("/*");
+      }
     }
-  };
-
-  const handleDeleteTask = async (id_taskToDelete) => {
-    try {
-      await deleteTask.mutateAsync(id_taskToDelete);
-    } catch (error) {
-      console.error("Unexpected error:", error.message);
-    }
-  };
-
-  if (fetchError) {
-    toast.error("Lista não foi encontrada");
-  }
+    VerifyUser();
+  }, [navigate]);
 
   return (
     <>
-      <form onSubmit={handleAddTask} className="inline-grid">
-        <>
-          <Input
-            setInput={setNewTask}
-            onPress={handleAddTask}
-            value={newTask}
-            type="text"
-          >
-            Insert Task
-          </Input>
-        </>
-      </form>
+      {}
+      <Button onClick={() => setShowArchive(true)}>Arquivo</Button>
+      <AddTaskForm />
+      <Modal show={showArchive} onClose={() => setShowArchive(false)}>
+        <Archive archivedTasks={userList.filter((task) => task.archived)} />
+      </Modal>
       <ul className="mt-4 flex flex-col gap-2">
-        {userList.map((item) => (
-          <li key={item.id_task} className="borderb-2">
-            <p className="underline decoration-solid">{item.task}</p>
-            <button
-              onClick={() => handleDeleteTask(item.id_task)}
-              className="rounded border border-black bg-slate-300"
-            >
-              <HiTrash />
-            </button>
-          </li>
-        ))}
+        {userList
+          .filter((task) => !task.archived)
+          .map((item) => (
+            <TaskItem userList={userList} key={item.id_task} task={item} />
+          ))}
       </ul>
     </>
   );

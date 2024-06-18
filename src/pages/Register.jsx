@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import supabase from "../services/supabase";
 import Input from "../components/Input";
 import { toast } from "react-toastify";
+import Button from "../components/Button";
 
 function Register() {
   const [username, setUsername] = useState("");
@@ -45,12 +46,12 @@ function Register() {
         Confirm Password
       </Input>
 
-      <button
+      <Button
         className="mx-auto mt-3 max-w-40 items-center rounded border-2 border-black bg-slate-300 p-1 px-4 font-semibold hover:bg-slate-100"
-        onClick={handleRegister}
+        onClick={() => handleRegister()}
       >
         Register
-      </button>
+      </Button>
     </>
   );
 }

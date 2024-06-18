@@ -8,8 +8,9 @@ import Welcome from "./pages/Welcome";
 import HomePage from "./pages/HomePage";
 import { ToastContainer } from "react-toastify";
 
-import AppLayout from "./components/header/AppLayout";
+import AppLayout from "./components/ui/AppLayout";
 import { useState } from "react";
+import ErrorNotFound from "./pages/ErrorNotFound";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -39,7 +40,8 @@ function App() {
                 element={<Login setLogged={() => setLogged(true)} />}
               ></Route>
               <Route path="register" element={<Register />}></Route>
-              <Route path="welcome" element={<Welcome />}></Route>
+              <Route path="welcome/*" element={<Welcome />}></Route>
+              <Route path="*" element={<ErrorNotFound />}></Route>
             </Route>
           </Routes>
         </BrowserRouter>
